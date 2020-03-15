@@ -1,2 +1,2 @@
 # MySettings
-settings and defaults
+My VsCode settings with power line fonts
