@@ -17,7 +17,8 @@ sudo systemctl enable httpd.service
 sudo echo "<h1> At $(hostname -f) </h1>" > /var/www/html/index.html
   ```
 
-```#!/bin/bash
+```
+#!/bin/bash
 yum update -y
 yum install httpd php php-mysql -y
 cd /var/www/html
