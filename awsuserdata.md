@@ -61,3 +61,25 @@ find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod 0664 {} \;
 echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 ```
+### Print CPU Usage
+```ps -Ao user,uid,comm,pid,pcpu,tty -r | head -n 6```
+
+### crontab
+```
+sudo su
+crontab -u ec2-user -l
+echo -e "*/1 * * * * ~/aws-scripts-mon/mon-put-instance-data.pl -mem-util --mem-used --mem-avail --swap-util --disk-space-util --disk-space-used --disk-space-avail --memory-units=megabytes --disk-path=/dev/xvda1 --from-cron " | crontab -u ec2-user -
+exit
+```
+### User Data Script to setup cloud watch
+```
+#!/bin/sh
+yum install -y perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA unzip
+cd /home/ec2-user
+curl http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip -O
+unzip CloudWatchMonitoringScripts-1.2.1.zip
+rm -rf CloudWatchMonitoringScripts-1.2.1.zip
+chown ec2-user:ec2-user aws-scripts-mon
+echo "* * * * * ec2-user /home/ec2-user/aws-scripts-mon/mon-put-instance-data.pl --mem-util --swap-util --aggregated --auto-scaling --from-cron" >> /var/spool/cron/ec2-user
+echo "0 * * * * ec2-user /home/ec2-user/aws-scripts-mon/mon-put-instance-data.pl --disk-space-used --disk-space-avail --disk-space-util --disk-path=/  --aggregated --auto-scaling --from-cron" >> /var/spool/cron/ec2-user
+```
