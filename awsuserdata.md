@@ -16,6 +16,15 @@ sudo systemctl start httpd.service
 sudo systemctl enable httpd.service
 sudo echo "<h1> At $(hostname -f) </h1>" > /var/www/html/index.html
   ```
+```
+#!/bin/bash
+sudo su
+yum update -y
+yum install -y httpd
+systemctl start httpd.service
+systemctl enable httpd.service
+echo "<h1> At $(hostname -f) </h1>" > /var/www/html/index.html
+```
 
 ```
 #!/bin/bash
