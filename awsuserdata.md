@@ -84,3 +84,29 @@ chown ec2-user:ec2-user aws-scripts-mon
 echo "* * * * * ec2-user /home/ec2-user/aws-scripts-mon/mon-put-instance-data.pl --mem-util --swap-util --aggregated --auto-scaling --from-cron" >> /var/spool/cron/ec2-user
 echo "0 * * * * ec2-user /home/ec2-user/aws-scripts-mon/mon-put-instance-data.pl --disk-space-used --disk-space-avail --disk-space-util --disk-path=/  --aggregated --auto-scaling --from-cron" >> /var/spool/cron/ec2-user
 ```
+### Aws cron script
+```
+This is your userdata script (which will be run by ec2-init / cloud-init when the instance launches), it will create hourly, daily, weekly, monthly jobs for the instance :
+
+
+#!/bin/sh
+sudo -s # become root
+
+echo "#!/bin/sh" >> /etc/cron.hourly/scriptname #no file extensions
+echo "Your command" >> /etc/cron.hourly/scriptname
+chmod 700 /etc/cron.hourly/scriptname
+
+echo "#!/bin/sh" >> /etc/cron.daily/scriptname #no file extensions
+echo "Your command" >> /etc/cron.daily/scriptname
+chmod 700 /etc/cron.daily/scriptname
+
+echo "#!/bin/sh" >> /etc/cron.weekly/scriptname #no file extensions
+echo "Your command" >> /etc/cron.weekly/scriptname
+chmod 700 /etc/cron.weekly/scriptname
+
+echo "#!/bin/sh" >> /etc/cron.monthly/scriptname #no file extensions
+echo "Your command" >> /etc/cron.monthly/scriptname
+chmod 700 /etc/cron.monthly/scriptname
+
+exit # get out of root
+```
