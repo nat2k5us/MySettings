@@ -112,3 +112,6 @@ chmod 700 /etc/cron.monthly/scriptname
 
 exit # get out of root
 ```
+### attach Internet Gateway to VPC
+```
+aws ec2 attach-internet-gateway --vpc-id "vpc-04168b9211b81203a" --internet-gateway-id "igw-0ad040e30d9ec0f50" --region us-east-1```
